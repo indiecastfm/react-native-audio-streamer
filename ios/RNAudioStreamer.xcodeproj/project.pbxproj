@@ -1,0 +1,282 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4EA3C7FC1DED6DA700FF8C38 /* RNAudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA3C7FB1DED6DA700FF8C38 /* RNAudioStreamer.m */; };
+		4EA3C7FD1DED6DA700FF8C38 /* RNAudioStreamer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4EA3C7FA1DED6DA700FF8C38 /* RNAudioStreamer.h */; };
+		4EA3C8191DED71D400FF8C38 /* RNAudioFileURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA3C8181DED71D400FF8C38 /* RNAudioFileURL.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4EA3C7F51DED6DA700FF8C38 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				4EA3C7FD1DED6DA700FF8C38 /* RNAudioStreamer.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4EA3C7F71DED6DA700FF8C38 /* libRNAudioStreamer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNAudioStreamer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EA3C7FA1DED6DA700FF8C38 /* RNAudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNAudioStreamer.h; sourceTree = "<group>"; };
+		4EA3C7FB1DED6DA700FF8C38 /* RNAudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNAudioStreamer.m; sourceTree = "<group>"; };
+		4EA3C8051DED6E4D00FF8C38 /* DOUAudioStreamer */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DOUAudioStreamer; sourceTree = "<group>"; };
+		4EA3C8171DED71D400FF8C38 /* RNAudioFileURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAudioFileURL.h; sourceTree = "<group>"; };
+		4EA3C8181DED71D400FF8C38 /* RNAudioFileURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAudioFileURL.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4EA3C7F41DED6DA700FF8C38 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4EA3C7EE1DED6DA700FF8C38 = {
+			isa = PBXGroup;
+			children = (
+				4EA3C7F91DED6DA700FF8C38 /* RNAudioStreamer */,
+				4EA3C7F81DED6DA700FF8C38 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4EA3C7F81DED6DA700FF8C38 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4EA3C7F71DED6DA700FF8C38 /* libRNAudioStreamer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4EA3C7F91DED6DA700FF8C38 /* RNAudioStreamer */ = {
+			isa = PBXGroup;
+			children = (
+				4EA3C7FA1DED6DA700FF8C38 /* RNAudioStreamer.h */,
+				4EA3C7FB1DED6DA700FF8C38 /* RNAudioStreamer.m */,
+				4EA3C8171DED71D400FF8C38 /* RNAudioFileURL.h */,
+				4EA3C8181DED71D400FF8C38 /* RNAudioFileURL.m */,
+				4EA3C8051DED6E4D00FF8C38 /* DOUAudioStreamer */,
+			);
+			path = RNAudioStreamer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4EA3C7F61DED6DA700FF8C38 /* RNAudioStreamer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4EA3C8001DED6DA700FF8C38 /* Build configuration list for PBXNativeTarget "RNAudioStreamer" */;
+			buildPhases = (
+				4EA3C7F31DED6DA700FF8C38 /* Sources */,
+				4EA3C7F41DED6DA700FF8C38 /* Frameworks */,
+				4EA3C7F51DED6DA700FF8C38 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RNAudioStreamer;
+			productName = RNAudioStreamer;
+			productReference = 4EA3C7F71DED6DA700FF8C38 /* libRNAudioStreamer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4EA3C7EF1DED6DA700FF8C38 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Victor Chan";
+				TargetAttributes = {
+					4EA3C7F61DED6DA700FF8C38 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = T5JS3KBRA4;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 4EA3C7F21DED6DA700FF8C38 /* Build configuration list for PBXProject "RNAudioStreamer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4EA3C7EE1DED6DA700FF8C38;
+			productRefGroup = 4EA3C7F81DED6DA700FF8C38 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4EA3C7F61DED6DA700FF8C38 /* RNAudioStreamer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4EA3C7F31DED6DA700FF8C38 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EA3C8191DED71D400FF8C38 /* RNAudioFileURL.m in Sources */,
+				4EA3C7FC1DED6DA700FF8C38 /* RNAudioStreamer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4EA3C7FE1DED6DA700FF8C38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		4EA3C7FF1DED6DA700FF8C38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4EA3C8011DED6DA700FF8C38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = T5JS3KBRA4;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4EA3C8021DED6DA700FF8C38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = T5JS3KBRA4;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4EA3C7F21DED6DA700FF8C38 /* Build configuration list for PBXProject "RNAudioStreamer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4EA3C7FE1DED6DA700FF8C38 /* Debug */,
+				4EA3C7FF1DED6DA700FF8C38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4EA3C8001DED6DA700FF8C38 /* Build configuration list for PBXNativeTarget "RNAudioStreamer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4EA3C8011DED6DA700FF8C38 /* Debug */,
+				4EA3C8021DED6DA700FF8C38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4EA3C7EF1DED6DA700FF8C38 /* Project object */;
+}
