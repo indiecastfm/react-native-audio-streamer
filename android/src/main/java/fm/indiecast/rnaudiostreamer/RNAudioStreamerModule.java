@@ -84,6 +84,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         if (player != null){
             player.stop();
             player = null;
+            status = "STOPPED";
         }
 
         // Create player
@@ -177,6 +178,15 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
     public void onLoadingChanged(boolean isLoading) {
         if (isLoading == true){
             status = BUFFERING;
+            return;
+        }else if (this.player != null){
+            if (this.player.getPlayWhenReady()) {
+                status = PLAYING;
+            } else {
+                status = PAUSED;
+            }
+        }else{
+            status = STOPPED;
         }
     }
 
