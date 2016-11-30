@@ -1,7 +1,10 @@
 {
-  "name": "RNAudioStreamer",
+  "name": "react-native-audio-streamer",
   "version": "0.0.1",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:victor36max/react-native-audio-streamer.git"
+  },
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
@@ -10,6 +13,7 @@
     "react": "15.4.1",
     "react-native": "0.38.0"
   },
+  "main": "index.js",
   "jest": {
     "preset": "react-native"
   },
