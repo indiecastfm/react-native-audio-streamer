@@ -81,6 +81,11 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
 
     @ReactMethod public void setUrl(String urlString) {
 
+        if (player != null){
+            player.stop();
+            player = null;
+        }
+
         // Create player
         Handler mainHandler = new Handler();
         TrackSelector trackSelector = new DefaultTrackSelector(mainHandler);
@@ -109,19 +114,29 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         player.setPlayWhenReady(false);
     }
 
-    @ReactMethod public void seekToTime(long time) {
+    @ReactMethod public void seekToTime(double time) {
         Assertions.assertNotNull(player);
-        player.seekTo(time * 1000);
+        player.seekTo((long)time * 1000);
     }
 
-    @ReactMethod public void currentTime(Callback errorCallback, Callback successCallback) {
-        Assertions.assertNotNull(player);
-        successCallback.invoke(player.getCurrentPosition());
+    @ReactMethod public void currentTime(Callback callback) {
+        if (player == null){
+            callback.invoke(null,(double)0);
+        }else{
+            callback.invoke(null,(double)(player.getCurrentPosition()/1000));
+        }
     }
 
-    @ReactMethod public void duration(Callback errorCallback, Callback successCallback) {
-        Assertions.assertNotNull(player);
-        successCallback.invoke(player.getDuration());
+    @ReactMethod public void status(Callback callback) {
+        callback.invoke(null,status);
+    }
+
+    @ReactMethod public void duration(Callback callback) {
+        if (player == null){
+            callback.invoke(null,(double)0);
+        }else{
+            callback.invoke(null,(double)(player.getDuration()/1000));
+        }
     }
 
     @Override
