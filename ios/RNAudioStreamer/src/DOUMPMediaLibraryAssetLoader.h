@@ -14,7 +14,6 @@
  *
  */
 
-#if TARGET_OS_IPHONE
 
 #import <Foundation/Foundation.h>
 
@@ -39,4 +38,3 @@ typedef void (^DOUMPMediaLibraryAssetLoaderCompletedBlock)(void);
 
 @end
 
-#endif /* TARGET_OS_IPHONE */
