@@ -7,7 +7,7 @@
 //
 
 #import "RNAudioStreamer.h"
-#import "DOUAudioStreamer/DOUAudioStreamer.h"
+#import "DOUAudioStreamer.h"
 #import "RNAudioFileURL.h"
 #import <AVFoundation/AVFoundation.h>
 

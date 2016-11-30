@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DOUAudioStreamer/DOUAudioStreamer+Options.h"
-#import "DOUAudioStreamer/DOUAudioStreamer.h"
+#import "DOUAudioStreamer+Options.h"
+#import "DOUAudioStreamer.h"
 
 @interface RNAudioFileURL : NSObject<DOUAudioFile>
 @property(strong, nonatomic) NSURL *url;
