@@ -8,11 +8,9 @@ Audio streaming is based on [ExoPlayer](https://github.com/google/ExoPlayer)
 
 ## Installation
 
-- Add following dependency in your `package.json`
+`npm install react-native-audio-streamer --save`
 
-`"react-native-audio-streamer": "git://github.com/victor36max/react-native-audio-streamer.git"`
-
-- Then run the following command to link to iOS & Android project
+Then run the following command to link to iOS & Android project
 
 `react-native link react-native-audio-streamer`
 
