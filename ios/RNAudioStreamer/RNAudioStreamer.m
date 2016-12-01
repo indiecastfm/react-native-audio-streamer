@@ -10,6 +10,7 @@
 #import "DOUAudioStreamer.h"
 #import "RNAudioFileURL.h"
 #import <AVFoundation/AVFoundation.h>
+#import "RCTEventDispatcher.h"
 
 // Player status
 static NSString *PLAYING = @"PLAYING";
@@ -26,9 +27,19 @@ static NSString *ERROR = @"ERROR";
 
 @implementation RNAudioStreamer
 
+static void *kStatusKVOKey = &kStatusKVOKey;
+
+@synthesize bridge = _bridge;
+
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
+    
+    if (_player) {
+        [_player stop];
+        [_player removeObserver:self forKeyPath:@"status"];
+        _player = nil;
+    }
     
     //Audio session
     NSError *err;
@@ -45,6 +56,12 @@ RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
     _douUrl = [[RNAudioFileURL alloc] init];
     _douUrl.url = url;
     _player = [[DOUAudioStreamer alloc] initWithAudioFile:_douUrl];
+    
+    // Status observer
+    [_player addObserver:self
+              forKeyPath:@"status"
+                 options:NSKeyValueObservingOptionNew
+                 context:kStatusKVOKey];
 }
 
 RCT_EXPORT_METHOD(play) {
@@ -59,13 +76,6 @@ RCT_EXPORT_METHOD(seekToTime: (double)time) {
    if(_player) [_player setCurrentTime:time];
 }
 
-RCT_EXPORT_METHOD(stop) {
-    if (_player) {
-        [_player stop];
-        _player = nil;
-    }
-}
-
 RCT_EXPORT_METHOD(duration:(RCTResponseSenderBlock)callback){
     callback(@[[NSNull null], @(_player ? _player.duration : 0)]);
 }
@@ -74,8 +84,36 @@ RCT_EXPORT_METHOD(currentTime:(RCTResponseSenderBlock)callback){
     callback(@[[NSNull null], @(_player ? _player.currentTime : 0)]);
 }
 
-RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){\
-    
+RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
+    callback(@[[NSNull null], _player ? [self rnStatusFromDouStatus] : STOPPED]);
+}
+
+/**
+ *  Status KVO
+ */
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if (context == kStatusKVOKey) {
+        [self performSelector:@selector(statusChanged)
+                     onThread:[NSThread mainThread]
+                   withObject:nil
+                waitUntilDone:NO];
+    } else {
+        [super observeValueForKeyPath:keyPath
+                             ofObject:object
+                               change:change
+                              context:context];
+    }
+}
+
+- (void)statusChanged {
+    [self.bridge.eventDispatcher sendDeviceEventWithName:@"RNAudioStreamerStatusChanged"
+                                                    body: _player ? [self rnStatusFromDouStatus] : STOPPED];
+}
+
+- (NSString *)rnStatusFromDouStatus {
     NSString *statusString;
     switch(_player.status){
         case DOUAudioStreamerPlaying:
@@ -97,8 +135,7 @@ RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){\
             statusString = ERROR;
             break;
     }
-    
-    callback(@[[NSNull null], _player ? statusString : STOPPED]);
+    return statusString;
 }
 
 @end

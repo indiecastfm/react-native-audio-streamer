@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -33,13 +34,15 @@ import java.util.List;
 
 public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements ExoPlayer.EventListener, ExtractorMediaSource.EventListener{
 
-    public RNAudioStreamerModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-    }
-
     // Player
     private SimpleExoPlayer player = null;
     private String status = "STOPPED";
+    private ReactApplicationContext reactContext = null;
+
+    public RNAudioStreamerModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+        this.reactContext = reactContext;
+    }
 
     // Status
     private static final String PLAYING = "PLAYING";
@@ -59,18 +62,19 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
             player.stop();
             player = null;
             status = "STOPPED";
+            this.sendStatusEvent();
         }
 
         // Create player
         Handler mainHandler = new Handler();
         TrackSelector trackSelector = new DefaultTrackSelector(mainHandler);
         LoadControl loadControl = new DefaultLoadControl();
-        this.player = ExoPlayerFactory.newSimpleInstance(this.getReactApplicationContext(), trackSelector, loadControl);
+        this.player = ExoPlayerFactory.newSimpleInstance(reactContext, trackSelector, loadControl);
 
         // Create source
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this.getReactApplicationContext(), getDefaultUserAgent(), bandwidthMeter);
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(reactContext, getDefaultUserAgent(), bandwidthMeter);
         MediaSource audioSource = new ExtractorMediaSource(Uri.parse(urlString), dataSourceFactory, extractorsFactory, mainHandler, this);
 
         // Start preparing audio
@@ -117,19 +121,24 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         switch (playbackState) {
             case ExoPlayer.STATE_IDLE:
                 status = STOPPED;
+                this.sendStatusEvent();
                 break;
             case ExoPlayer.STATE_BUFFERING:
                 status = BUFFERING;
+                this.sendStatusEvent();
                 break;
             case ExoPlayer.STATE_READY:
                 if (this.player != null && this.player.getPlayWhenReady()) {
                     status = PLAYING;
+                    this.sendStatusEvent();
                 } else {
                     status = PAUSED;
+                    this.sendStatusEvent();
                 }
                 break;
             case ExoPlayer.STATE_ENDED:
                 status = FINISHED;
+                this.sendStatusEvent();
                 break;
         }
     }
@@ -137,6 +146,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
     @Override
     public void onPlayerError(ExoPlaybackException error) {
         status = ERROR;
+        this.sendStatusEvent();
     }
 
     @Override
@@ -148,20 +158,25 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
     public void onLoadingChanged(boolean isLoading) {
         if (isLoading == true){
             status = BUFFERING;
+            this.sendStatusEvent();
         }else if (this.player != null){
             if (this.player.getPlayWhenReady()) {
                 status = PLAYING;
+                this.sendStatusEvent();
             } else {
                 status = PAUSED;
+                this.sendStatusEvent();
             }
         }else{
             status = STOPPED;
+            this.sendStatusEvent();
         }
     }
 
     @Override
     public void onLoadError(IOException error) {
         status = ERROR;
+        this.sendStatusEvent();
     }
 
     @Override
@@ -191,5 +206,11 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         }
         result.append(")");
         return result.toString();
+    }
+
+    private void sendStatusEvent() {
+        this.reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("RNAudioStreamerStatusChanged", status);
     }
 }
