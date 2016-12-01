@@ -114,7 +114,7 @@ RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
 }
 
 - (NSString *)rnStatusFromDouStatus {
-    NSString *statusString;
+    NSString *statusString = STOPPED;
     switch(_player.status){
         case DOUAudioStreamerPlaying:
             statusString = PLAYING;
