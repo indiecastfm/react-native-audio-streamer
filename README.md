@@ -1,6 +1,6 @@
 # react-native-audio-streamer
 
-A react-native audio streaming module which works for both iOS & Android
+A react-native audio streaming module which works on both iOS & Android
 
 iOS streaming is based on [DOUAudioStreamer](https://github.com/douban/DOUAudioStreamer)
 
@@ -49,7 +49,7 @@ RNAudioStreamer.status((err, status)=>{
 
 ### Status Change Observer
 
-```Javascript
+```javascript
 const {
   DeviceEventEmitter
 } = 'react-native'
