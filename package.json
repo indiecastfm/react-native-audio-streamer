@@ -5,6 +5,17 @@
     "type": "git",
     "url": "git@github.com:victor36max/react-native-audio-streamer.git"
   },
+  "keywords": [
+    "react-native",
+    "streaming",
+    "audio",
+    "ios",
+    "android",
+    "media",
+    "player"
+  ],
+  "author": "Victor Chan",
+  "license": "MIT",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
