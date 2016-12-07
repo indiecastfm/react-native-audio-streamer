@@ -4,7 +4,7 @@ A react-native audio streaming module which works on both iOS & Android
 
 iOS streaming is based on [DOUAudioStreamer](https://github.com/douban/DOUAudioStreamer)
 
-Audio streaming is based on [ExoPlayer](https://github.com/google/ExoPlayer)
+Android streaming is based on [ExoPlayer](https://github.com/google/ExoPlayer)
 
 ## Installation
 
