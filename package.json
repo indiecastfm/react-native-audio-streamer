@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "repository": {
     "type": "git",
-    "url": "git@github.com:victor36max/react-native-audio-streamer.git"
+    "url": "git@github.com:indiecastfm/react-native-audio-streamer.git"
   },
   "keywords": [
     "react-native",
@@ -14,7 +14,7 @@
     "media",
     "player"
   ],
-  "author": "Victor Chan",
+  "author": "IndieCast.fm",
   "license": "MIT",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
