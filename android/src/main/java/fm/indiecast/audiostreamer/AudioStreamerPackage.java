@@ -1,5 +1,5 @@
 
-package fm.indiecast.rnaudiostreamer;
+package fm.indiecast.audiostreamer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,13 +12,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-public class RNAudioStreamerPackage implements ReactPackage {
-    private Class<?> clsActivity;
+public class AudioStreamerPackage implements ReactPackage {
 
     @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+    public List<NativeModule> createNativeModules(ReactApplicationContext context) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNAudioStreamerModule(reactContext));
+        modules.add(new Playback(context));
         return modules;
     }
 
@@ -28,7 +27,7 @@ public class RNAudioStreamerPackage implements ReactPackage {
     }
 
     @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList();
+    public List<ViewManager> createViewManagers(ReactApplicationContext contact) {
+        return Collections.emptyList();
     }
 }

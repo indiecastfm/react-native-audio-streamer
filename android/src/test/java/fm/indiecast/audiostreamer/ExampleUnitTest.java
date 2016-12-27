@@ -1,4 +1,4 @@
-package fm.indiecast.rnaudiostreamer;
+package fm.indiecast.audiostreamer;
 
 import org.junit.Test;
 
