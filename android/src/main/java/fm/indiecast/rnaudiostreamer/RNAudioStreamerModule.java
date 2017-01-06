@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.List;
 
+import com.danikula.videocache.HttpProxyCacheServer;
+
 public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements ExoPlayer.EventListener, ExtractorMediaSource.EventListener{
 
     // Player
@@ -65,6 +67,10 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
             this.sendStatusEvent();
         }
 
+        // Create Proxy Cache
+        HttpProxyCacheServer proxy = ProxyFactory.getProxy(reactContext);
+        String proxyUrl = proxy.getProxyUrl(urlString);
+
         // Create player
         Handler mainHandler = new Handler();
         TrackSelector trackSelector = new DefaultTrackSelector(mainHandler);
@@ -75,7 +81,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(reactContext, getDefaultUserAgent(), bandwidthMeter);
-        MediaSource audioSource = new ExtractorMediaSource(Uri.parse(urlString), dataSourceFactory, extractorsFactory, mainHandler, this);
+        MediaSource audioSource = new ExtractorMediaSource(Uri.parse(proxyUrl), dataSourceFactory, extractorsFactory, mainHandler, this);
 
         // Start preparing audio
         player.prepare(audioSource);
