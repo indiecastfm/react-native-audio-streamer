@@ -7,8 +7,8 @@
 //
 
 #import "RNAudioStreamer.h"
-#import "DOUAudioStreamer.h"
-#import "RNAudioFileURL.h"
+#import "ICAudioPlayer.h"
+#import "ICAudioCacheManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import "RCTEventDispatcher.h"
 
@@ -20,10 +20,6 @@ static NSString *FINISHED = @"FINISHED";
 static NSString *BUFFERING = @"BUFFERING";
 static NSString *ERROR = @"ERROR";
 
-@interface RNAudioStreamer ()
-@property(strong, nonatomic) DOUAudioStreamer *player;
-@property(strong, nonatomic) RNAudioFileURL *douUrl;
-@end
 
 @implementation RNAudioStreamer
 
@@ -35,11 +31,8 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
     
-    if (_player) {
-        [_player stop];
-        [_player removeObserver:self forKeyPath:@"status"];
-        _player = nil;
-    }
+    // Remove previous observer
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:kICAudioPlayerStatusUpdateNotification object:nil];
     
     //Audio session
     NSError *err;
@@ -51,87 +44,71 @@ RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
         NSLog(@"Audio session error");
     }
     
+    [[ICAudioPlayer sharedPlayer] preparePlayerWithUrl:urlString];
     
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    _douUrl = [[RNAudioFileURL alloc] init];
-    _douUrl.url = url;
-    _player = [[DOUAudioStreamer alloc] initWithAudioFile:_douUrl];
-    
-    // Status observer
-    [_player addObserver:self
-              forKeyPath:@"status"
-                 options:NSKeyValueObservingOptionNew
-                 context:kStatusKVOKey];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(statusChanged:) name:kICAudioPlayerStatusUpdateNotification object:nil];
 }
 
 RCT_EXPORT_METHOD(play) {
-    if(_player) [_player play];
+    [[ICAudioPlayer sharedPlayer] play];
 }
 
 RCT_EXPORT_METHOD(pause) {
-    if(_player) [_player pause];
+    [[ICAudioPlayer sharedPlayer] pause];
 }
 
 RCT_EXPORT_METHOD(seekToTime: (double)time) {
-   if(_player) [_player setCurrentTime:time];
+    [[ICAudioPlayer sharedPlayer] setCurrentTime:time];
 }
 
 RCT_EXPORT_METHOD(duration:(RCTResponseSenderBlock)callback){
-    callback(@[[NSNull null], @(_player ? _player.duration : 0)]);
+    callback(@[[NSNull null], @([[ICAudioPlayer sharedPlayer] duration])]);
 }
 
 RCT_EXPORT_METHOD(currentTime:(RCTResponseSenderBlock)callback){
-    callback(@[[NSNull null], @(_player ? _player.currentTime : 0)]);
+    callback(@[[NSNull null], @([[ICAudioPlayer sharedPlayer] currentTime])]);
 }
 
 RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
-    callback(@[[NSNull null], _player ? [self rnStatusFromDouStatus] : STOPPED]);
+    callback(@[[NSNull null], [self rnStatusFromICStatus]]);
 }
 
-/**
- *  Status KVO
- */
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-    if (context == kStatusKVOKey) {
-        [self performSelector:@selector(statusChanged)
-                     onThread:[NSThread mainThread]
-                   withObject:nil
-                waitUntilDone:NO];
-    } else {
-        [super observeValueForKeyPath:keyPath
-                             ofObject:object
-                               change:change
-                              context:context];
-    }
-}
+//RCT_EXPORT_METHOD(setCacheFileLimit: (int) limit){
+//    [[ICAudioPlayer sharedPlayer] setCacheFileLimit:limit];
+//}
+//
+//RCT_EXPORT_METHOD(clearCache){
+//    [[ICAudioCacheManager sharedManager] ClearCache];
+//}
+//
+//RCT_EXPORT_METHOD(cacheSize:(RCTResponseSenderBlock)callback){
+//    callback(@[[NSNull null], @([[ICAudioCacheManager sharedManager] cacheSize])]);
+//}
 
-- (void)statusChanged {
+- (void)statusChanged:(NSNotification *)notification {
     [self.bridge.eventDispatcher sendDeviceEventWithName:@"RNAudioStreamerStatusChanged"
-                                                    body: _player ? [self rnStatusFromDouStatus] : STOPPED];
+                                                    body: [self rnStatusFromICStatus]];
 }
 
-- (NSString *)rnStatusFromDouStatus {
+- (NSString *)rnStatusFromICStatus {
     NSString *statusString = STOPPED;
-    switch(_player.status){
-        case DOUAudioStreamerPlaying:
+    switch([ICAudioPlayer sharedPlayer].status){
+        case ICAudioPlayerStatusPlaying:
             statusString = PLAYING;
             break;
-        case DOUAudioStreamerPaused:
+        case ICAudioPlayerStatusPaused:
             statusString = PAUSED;
             break;
-        case DOUAudioStreamerIdle:
+        case ICAudioPlayerStatusStopped:
             statusString = STOPPED;
             break;
-        case DOUAudioStreamerFinished:
+        case ICAudioPlayerStatusFinished:
             statusString = FINISHED;
             break;
-        case DOUAudioStreamerBuffering:
+        case ICAudioPlayerStatusBuffering:
             statusString = BUFFERING;
             break;
-        case DOUAudioStreamerError:
+        case ICAudioPlayerStatusError:
             statusString = ERROR;
             break;
     }
