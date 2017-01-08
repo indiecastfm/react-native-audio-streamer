@@ -146,7 +146,7 @@
   }
 }
 
-- (void)ClearCache {
+- (void)clearCache {
   NSDirectoryEnumerator *en = [_fm enumeratorAtPath:self.cacheDirectory];
   NSString *file;
   while (file = [en nextObject]) {

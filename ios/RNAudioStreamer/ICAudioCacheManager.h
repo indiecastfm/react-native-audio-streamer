@@ -53,6 +53,6 @@
 /**
  *  Remove all files in cache directory
  */
-- (void)ClearCache;
+- (void)clearCache;
 
 @end
