@@ -29,8 +29,12 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import java.io.IOException;
+import java.lang.Exception;
+import java.io.File;
 import java.util.Map;
 import java.util.List;
+
+import com.danikula.videocache.HttpProxyCacheServer;
 
 public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements ExoPlayer.EventListener, ExtractorMediaSource.EventListener{
 
@@ -38,6 +42,13 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
     private SimpleExoPlayer player = null;
     private String status = "STOPPED";
     private ReactApplicationContext reactContext = null;
+
+    // Media Cache Proxy
+    HttpProxyCacheServer proxy;
+
+    // Media Proxy Cache
+    private Integer mMaxCacheFilesCount = 50; // Default 50 files
+    private Integer mMaxCacheSize = 1024 * 1024 * 1024; // Default 1 GB
 
     public RNAudioStreamerModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -52,9 +63,51 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
     private static final String BUFFERING = "BUFFERING";
     private static final String ERROR = "ERROR";
 
+    // Module Name
     @Override public String getName() {
         return "RNAudioStreamer";
     }
+
+    // Set the number of files to be stored in cache
+    @ReactMethod public void setCacheFileLimit(Integer limit) {
+        this.mMaxCacheFilesCount = limit;
+    }
+
+    // Set the total cache size (in bytes)
+    @ReactMethod public void setCacheSize(Integer size) {
+        this.mMaxCacheSize = size;
+    }
+
+    // Clear the cache
+    @ReactMethod public void clearCache() {
+      try{
+          Utils.cleanDirectory(reactContext.getExternalCacheDir());
+      }catch(IOException e){
+          e.printStackTrace();
+      }
+    }
+
+    // Return cache size as human readable string
+    @ReactMethod public void cacheSize(Callback callback) {
+        try {
+            File cache = new File(reactContext.getExternalCacheDir().toString()+"/video-cache");
+            long sizeInBytes = Utils.getFolderSize(cache);
+
+            String sizeInHR = Utils.humanReadableByteCount(sizeInBytes, true);
+            callback.invoke(null, sizeInHR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Check is file cached
+    /**
+    * Disabled - not fully implemented
+    *
+    @ReactMethod public boolean isFileCached(String url) {
+        return proxy.isCached(url);
+    }
+    */
 
     @ReactMethod public void setUrl(String urlString) {
 
@@ -64,6 +117,10 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
             status = "STOPPED";
             this.sendStatusEvent();
         }
+
+        // Create Proxy Cache
+        proxy = ProxyFactory.getProxy(reactContext, mMaxCacheFilesCount, mMaxCacheSize);
+        String proxyUrl = proxy.getProxyUrl(urlString);
 
         // Create player
         Handler mainHandler = new Handler();
@@ -75,7 +132,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(reactContext, getDefaultUserAgent(), bandwidthMeter);
-        MediaSource audioSource = new ExtractorMediaSource(Uri.parse(urlString), dataSourceFactory, extractorsFactory, mainHandler, this);
+        MediaSource audioSource = new ExtractorMediaSource(Uri.parse(proxyUrl), dataSourceFactory, extractorsFactory, mainHandler, this);
 
         // Start preparing audio
         player.prepare(audioSource);
