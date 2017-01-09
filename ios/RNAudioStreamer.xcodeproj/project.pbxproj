@@ -25,6 +25,9 @@
 		4E2945C51DEEDC77000163DC /* DOUMPMediaLibraryAssetLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2945B11DEEDC77000163DC /* DOUMPMediaLibraryAssetLoader.m */; };
 		4E2945C61DEEDC77000163DC /* DOUSimpleHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2945B31DEEDC77000163DC /* DOUSimpleHTTPRequest.m */; };
 		4E2945C71DEEDC77000163DC /* NSData+DOUMappedFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2945B51DEEDC77000163DC /* NSData+DOUMappedFile.m */; };
+		4E6B3B511E2275AB00C7D070 /* ICAudioCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6B3B4C1E2275AB00C7D070 /* ICAudioCacheManager.m */; };
+		4E6B3B521E2275AB00C7D070 /* ICAudioFileURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6B3B4E1E2275AB00C7D070 /* ICAudioFileURL.m */; };
+		4E6B3B531E2275AB00C7D070 /* ICAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6B3B501E2275AB00C7D070 /* ICAudioPlayer.m */; };
 		4EA3C7FC1DED6DA700FF8C38 /* RNAudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA3C7FB1DED6DA700FF8C38 /* RNAudioStreamer.m */; };
 		4EA3C7FD1DED6DA700FF8C38 /* RNAudioStreamer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4EA3C7FA1DED6DA700FF8C38 /* RNAudioStreamer.h */; };
 		4EA3C8191DED71D400FF8C38 /* RNAudioFileURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA3C8181DED71D400FF8C38 /* RNAudioFileURL.m */; };
@@ -84,6 +87,12 @@
 		4E2945B31DEEDC77000163DC /* DOUSimpleHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DOUSimpleHTTPRequest.m; sourceTree = "<group>"; };
 		4E2945B41DEEDC77000163DC /* NSData+DOUMappedFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+DOUMappedFile.h"; sourceTree = "<group>"; };
 		4E2945B51DEEDC77000163DC /* NSData+DOUMappedFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+DOUMappedFile.m"; sourceTree = "<group>"; };
+		4E6B3B4B1E2275AB00C7D070 /* ICAudioCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICAudioCacheManager.h; sourceTree = "<group>"; };
+		4E6B3B4C1E2275AB00C7D070 /* ICAudioCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICAudioCacheManager.m; sourceTree = "<group>"; };
+		4E6B3B4D1E2275AB00C7D070 /* ICAudioFileURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICAudioFileURL.h; sourceTree = "<group>"; };
+		4E6B3B4E1E2275AB00C7D070 /* ICAudioFileURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICAudioFileURL.m; sourceTree = "<group>"; };
+		4E6B3B4F1E2275AB00C7D070 /* ICAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICAudioPlayer.h; sourceTree = "<group>"; };
+		4E6B3B501E2275AB00C7D070 /* ICAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICAudioPlayer.m; sourceTree = "<group>"; };
 		4EA3C7F71DED6DA700FF8C38 /* libRNAudioStreamer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNAudioStreamer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EA3C7FA1DED6DA700FF8C38 /* RNAudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNAudioStreamer.h; sourceTree = "<group>"; };
 		4EA3C7FB1DED6DA700FF8C38 /* RNAudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNAudioStreamer.m; sourceTree = "<group>"; };
@@ -150,6 +159,19 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		4E6B3B4A1E22758D00C7D070 /* ICAudioPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				4E6B3B4B1E2275AB00C7D070 /* ICAudioCacheManager.h */,
+				4E6B3B4C1E2275AB00C7D070 /* ICAudioCacheManager.m */,
+				4E6B3B4D1E2275AB00C7D070 /* ICAudioFileURL.h */,
+				4E6B3B4E1E2275AB00C7D070 /* ICAudioFileURL.m */,
+				4E6B3B4F1E2275AB00C7D070 /* ICAudioPlayer.h */,
+				4E6B3B501E2275AB00C7D070 /* ICAudioPlayer.m */,
+			);
+			name = ICAudioPlayer;
+			sourceTree = "<group>";
+		};
 		4EA3C7EE1DED6DA700FF8C38 = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +196,7 @@
 				4EA3C7FB1DED6DA700FF8C38 /* RNAudioStreamer.m */,
 				4EA3C8171DED71D400FF8C38 /* RNAudioFileURL.h */,
 				4EA3C8181DED71D400FF8C38 /* RNAudioFileURL.m */,
+				4E6B3B4A1E22758D00C7D070 /* ICAudioPlayer */,
 			);
 			path = RNAudioStreamer;
 			sourceTree = "<group>";
@@ -244,9 +267,12 @@
 				4E2945BF1DEEDC77000163DC /* DOUAudioRenderer.m in Sources */,
 				4E2945B71DEEDC77000163DC /* DOUAudioAnalyzer.m in Sources */,
 				4E2945BE1DEEDC77000163DC /* DOUAudioPlaybackItem.m in Sources */,
+				4E6B3B521E2275AB00C7D070 /* ICAudioFileURL.m in Sources */,
+				4E6B3B511E2275AB00C7D070 /* ICAudioCacheManager.m in Sources */,
 				4E2945B91DEEDC77000163DC /* DOUAudioEventLoop.m in Sources */,
 				4E2945C31DEEDC77000163DC /* DOUAudioVisualizer.m in Sources */,
 				4E2945BA1DEEDC77000163DC /* DOUAudioFilePreprocessor.m in Sources */,
+				4E6B3B531E2275AB00C7D070 /* ICAudioPlayer.m in Sources */,
 				4E2945C61DEEDC77000163DC /* DOUSimpleHTTPRequest.m in Sources */,
 				4EA3C7FC1DED6DA700FF8C38 /* RNAudioStreamer.m in Sources */,
 				4E2945C11DEEDC77000163DC /* DOUAudioStreamer+Options.m in Sources */,
