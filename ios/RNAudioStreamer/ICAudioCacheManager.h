@@ -21,6 +21,11 @@
 @property(nonatomic, readonly) unsigned long long int cacheSize;
 
 /**
+ *  Current cache size (human readable)
+ */
+@property(nonatomic, readonly) NSString *humanReadableCacheSize;
+
+/**
  *  Cache directory
  */
 @property(nonatomic, readonly) NSString *cacheDirectory;

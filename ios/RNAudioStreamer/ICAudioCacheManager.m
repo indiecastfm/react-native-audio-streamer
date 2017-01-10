@@ -15,6 +15,7 @@
 @implementation ICAudioCacheManager
 
 @synthesize cacheSize = _cacheSize;
+@synthesize humanReadableCacheSize = _humanReadableCacheSize;
 @synthesize cacheDirectory = _cacheDirectory;
 
 + (ICAudioCacheManager *)sharedManager {
@@ -174,6 +175,12 @@
   _cacheSize = size;
 
   return _cacheSize;
+}
+
+- (NSString *)humanReadableCacheSize {
+    double audioCacheSizeMb = (double)[self cacheSize] / 1024 / 1024;
+    _humanReadableCacheSize = [NSString stringWithFormat:@"%.2f Mb",audioCacheSizeMb];
+    return _humanReadableCacheSize;
 }
 
 - (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL {

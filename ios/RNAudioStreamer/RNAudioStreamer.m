@@ -73,17 +73,17 @@ RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
     callback(@[[NSNull null], [self rnStatusFromICStatus]]);
 }
 
-//RCT_EXPORT_METHOD(setCacheFileLimit: (int) limit){
-//    [[ICAudioPlayer sharedPlayer] setCacheFileLimit:limit];
-//}
-//
-//RCT_EXPORT_METHOD(clearCache){
-//    [[ICAudioCacheManager sharedManager] ClearCache];
-//}
-//
-//RCT_EXPORT_METHOD(cacheSize:(RCTResponseSenderBlock)callback){
-//    callback(@[[NSNull null], @([[ICAudioCacheManager sharedManager] cacheSize])]);
-//}
+RCT_EXPORT_METHOD(setCacheFileLimit: (int) limit){
+    [[ICAudioPlayer sharedPlayer] setCacheFileLimit:limit];
+}
+
+RCT_EXPORT_METHOD(clearCache){
+    [[ICAudioCacheManager sharedManager] clearCache];
+}
+
+RCT_EXPORT_METHOD(cacheSize:(RCTResponseSenderBlock)callback){
+    callback(@[[NSNull null], [[ICAudioCacheManager sharedManager] humanReadableCacheSize]]);
+}
 
 - (void)statusChanged:(NSNotification *)notification {
     [self.bridge.eventDispatcher sendDeviceEventWithName:@"RNAudioStreamerStatusChanged"
