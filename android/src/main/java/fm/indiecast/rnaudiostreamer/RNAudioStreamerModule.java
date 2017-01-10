@@ -11,6 +11,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import android.media.AudioManager;
+import android.media.AudioManager.OnAudioFocusChangeListener;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -38,10 +41,15 @@ import com.danikula.videocache.HttpProxyCacheServer;
 
 public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements ExoPlayer.EventListener, ExtractorMediaSource.EventListener{
 
+    private static final String TAG = "RNAS/Module";
+
     // Player
     private SimpleExoPlayer player = null;
     private String status = "STOPPED";
     private ReactApplicationContext reactContext = null;
+
+    // AudioFocus
+    private boolean mHasAudioFocus = false;
 
     // Media Cache Proxy
     HttpProxyCacheServer proxy;
@@ -113,6 +121,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
 
         if (player != null){
             player.stop();
+            changeAudioFocus(false);
             player = null;
             status = "STOPPED";
             this.sendStatusEvent();
@@ -137,6 +146,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         // Start preparing audio
         player.prepare(audioSource);
         player.addListener(this);
+        changeAudioFocus(true);
     }
 
     @ReactMethod public void play() {
@@ -171,6 +181,14 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         }
     }
 
+    public boolean isPlaying() {
+        if (status.equals("PLAYING")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         Log.d("onPlayerStateChanged", ""+playbackState);
@@ -178,6 +196,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         switch (playbackState) {
             case ExoPlayer.STATE_IDLE:
                 status = STOPPED;
+                changeAudioFocus(false);
                 this.sendStatusEvent();
                 break;
             case ExoPlayer.STATE_BUFFERING:
@@ -188,6 +207,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
                 if (this.player != null && this.player.getPlayWhenReady()) {
                     status = PLAYING;
                     this.sendStatusEvent();
+                    changeAudioFocus(true);
                 } else {
                     status = PAUSED;
                     this.sendStatusEvent();
@@ -196,6 +216,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
             case ExoPlayer.STATE_ENDED:
                 status = FINISHED;
                 this.sendStatusEvent();
+                changeAudioFocus(false);
                 break;
         }
     }
@@ -226,6 +247,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
             }
         }else{
             status = STOPPED;
+            changeAudioFocus(false);
             this.sendStatusEvent();
         }
     }
@@ -270,4 +292,74 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("RNAudioStreamerStatusChanged", status);
     }
+
+    /**
+    * AudioFocus
+    *
+    */
+
+    private final OnAudioFocusChangeListener mAudioFocusListener = createOnAudioFocusChangeListener();
+
+    private OnAudioFocusChangeListener createOnAudioFocusChangeListener() {
+        return new OnAudioFocusChangeListener() {
+            private boolean mLossTransient = false;
+            private boolean wasPlaying = false;
+
+            @Override
+            public void onAudioFocusChange(int focusChange) {
+                /*
+                 * Pause playback during alerts and notifications
+                 */
+                switch (focusChange) {
+                    case AudioManager.AUDIOFOCUS_LOSS:
+                        Log.i(TAG, "AUDIOFOCUS_LOSS");
+                        // Pause playback
+                        changeAudioFocus(false);
+                        pause();
+                        break;
+                    case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                        Log.i(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
+                        // Pause playback
+                        mLossTransient = true;
+                        wasPlaying = isPlaying();
+                        if (wasPlaying)
+                            pause();
+                        break;
+                    case AudioManager.AUDIOFOCUS_GAIN:
+                        Log.i(TAG, "AUDIOFOCUS_GAIN: ");
+                        // Resume playback
+                        if (mLossTransient) {
+                            if (wasPlaying)
+                                play();
+                            mLossTransient = false;
+                        }
+                        break;
+                }
+            }
+        };
+    }
+
+    private void changeAudioFocus(boolean acquire) {
+        final AudioManager am = (AudioManager)reactContext.getSystemService(reactContext.AUDIO_SERVICE);
+        if (am == null)
+            return;
+
+        if (acquire) {
+            if (!mHasAudioFocus) {
+                final int result = am.requestAudioFocus(mAudioFocusListener,
+                        AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    am.setParameters("bgm_state=true");
+                    mHasAudioFocus = true;
+                }
+            }
+        } else {
+            if (mHasAudioFocus) {
+                am.abandonAudioFocus(mAudioFocusListener);
+                am.setParameters("bgm_state=false");
+                mHasAudioFocus = false;
+            }
+        }
+    }
+
 }
