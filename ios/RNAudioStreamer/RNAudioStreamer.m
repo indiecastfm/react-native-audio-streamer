@@ -34,13 +34,13 @@ static void *kStatusKVOKey = &kStatusKVOKey;
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
-    
+
     if (_player) {
         [_player stop];
         [_player removeObserver:self forKeyPath:@"status"];
         _player = nil;
     }
-    
+
     //Audio session
     NSError *err;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&err];
@@ -50,13 +50,13 @@ RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
     }else{
         NSLog(@"Audio session error");
     }
-    
-    
+
+
     NSURL *url = [[NSURL alloc] initWithString:urlString];
     _douUrl = [[RNAudioFileURL alloc] init];
     _douUrl.url = url;
     _player = [[DOUAudioStreamer alloc] initWithAudioFile:_douUrl];
-    
+
     // Status observer
     [_player addObserver:self
               forKeyPath:@"status"
@@ -77,11 +77,11 @@ RCT_EXPORT_METHOD(seekToTime: (double)time) {
 }
 
 RCT_EXPORT_METHOD(duration:(RCTResponseSenderBlock)callback){
-    callback(@[[NSNull null], @(_player ? _player.duration : 0)]);
+    callback(@[[NSNull null], @(_player && _player.duration && _player.duration > 0 ? _player.duration : 0)]);
 }
 
 RCT_EXPORT_METHOD(currentTime:(RCTResponseSenderBlock)callback){
-    callback(@[[NSNull null], @(_player ? _player.currentTime : 0)]);
+    callback(@[[NSNull null], @(_player && _player.currentTime && _player.currentTime > 0 ? _player.currentTime : 0)]);
 }
 
 RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
