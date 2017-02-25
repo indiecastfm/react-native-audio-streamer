@@ -35,11 +35,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
 
-    if (_player) {
-        [_player stop];
-        [_player removeObserver:self forKeyPath:@"status"];
-        _player = nil;
-    }
+    [self killPlayer];
 
     //Audio session
     NSError *err;
@@ -136,6 +132,17 @@ RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
             break;
     }
     return statusString;
+}
+
+- (void)killPlayer{
+  if (!_player) return;
+  [_player stop];
+  [_player removeObserver:self forKeyPath:@"status"];
+  _player = nil;
+}
+
+- (void)dealloc{
+    [self killPlayer];
 }
 
 @end
