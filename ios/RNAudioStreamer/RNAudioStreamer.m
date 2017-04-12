@@ -7,8 +7,7 @@
 //
 
 #import "RNAudioStreamer.h"
-#import "DOUAudioStreamer.h"
-#import "RNAudioFileURL.h"
+#import "STKAudioPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import "RCTEventDispatcher.h"
 
@@ -21,8 +20,8 @@ static NSString *BUFFERING = @"BUFFERING";
 static NSString *ERROR = @"ERROR";
 
 @interface RNAudioStreamer ()
-@property(strong, nonatomic) DOUAudioStreamer *player;
-@property(strong, nonatomic) RNAudioFileURL *douUrl;
+@property(strong, nonatomic) STKAudioPlayer *player;
+@property(strong, nonatomic) NSURL *url;
 @end
 
 @implementation RNAudioStreamer
@@ -40,6 +39,7 @@ RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
     //Audio session
     NSError *err;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&err];
+
     if (!err){
         [[AVAudioSession sharedInstance] setActive:YES error:&err];
         if(err) NSLog(@"Audio session error");
@@ -47,21 +47,20 @@ RCT_EXPORT_METHOD(setUrl:(NSString *)urlString){
         NSLog(@"Audio session error");
     }
 
+    _url = [[NSURL alloc] initWithString:urlString];
+    _player = [[STKAudioPlayer alloc] init];
+    _player.volume = 1;
 
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    _douUrl = [[RNAudioFileURL alloc] init];
-    _douUrl.url = url;
-    _player = [[DOUAudioStreamer alloc] initWithAudioFile:_douUrl];
 
     // Status observer
     [_player addObserver:self
-              forKeyPath:@"status"
+              forKeyPath:@"state"
                  options:NSKeyValueObservingOptionNew
                  context:kStatusKVOKey];
 }
 
 RCT_EXPORT_METHOD(play) {
-    if(_player) [_player play];
+    if(_player) [_player playURL:_url];
 }
 
 RCT_EXPORT_METHOD(pause) {
@@ -69,7 +68,7 @@ RCT_EXPORT_METHOD(pause) {
 }
 
 RCT_EXPORT_METHOD(seekToTime: (double)time) {
-   if(_player) [_player setCurrentTime:time];
+   if(_player) [_player seekToTime:time];
 }
 
 RCT_EXPORT_METHOD(duration:(RCTResponseSenderBlock)callback){
@@ -77,11 +76,11 @@ RCT_EXPORT_METHOD(duration:(RCTResponseSenderBlock)callback){
 }
 
 RCT_EXPORT_METHOD(currentTime:(RCTResponseSenderBlock)callback){
-    callback(@[[NSNull null], @(_player && _player.currentTime && _player.currentTime > 0 ? _player.currentTime : 0)]);
+    callback(@[[NSNull null], @(_player && _player.progress && _player.progress > 0 ? _player.progress : 0)]);
 }
 
 RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
-    callback(@[[NSNull null], _player ? [self rnStatusFromDouStatus] : STOPPED]);
+    callback(@[[NSNull null], _player ? [self mapStatus] : STOPPED]);
 }
 
 /**
@@ -106,38 +105,32 @@ RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
 
 - (void)statusChanged {
     [self.bridge.eventDispatcher sendDeviceEventWithName:@"RNAudioStreamerStatusChanged"
-                                                    body: _player ? [self rnStatusFromDouStatus] : STOPPED];
+                                                    body: _player ? [self mapStatus] : STOPPED];
 }
 
-- (NSString *)rnStatusFromDouStatus {
-    NSString *statusString = STOPPED;
-    switch(_player.status){
-        case DOUAudioStreamerPlaying:
-            statusString = PLAYING;
-            break;
-        case DOUAudioStreamerPaused:
-            statusString = PAUSED;
-            break;
-        case DOUAudioStreamerIdle:
-            statusString = STOPPED;
-            break;
-        case DOUAudioStreamerFinished:
-            statusString = FINISHED;
-            break;
-        case DOUAudioStreamerBuffering:
-            statusString = BUFFERING;
-            break;
-        case DOUAudioStreamerError:
-            statusString = ERROR;
-            break;
+- (NSString *)mapStatus {
+    switch(_player.state){
+        case STKAudioPlayerStatePlaying:
+            return PLAYING;
+        case STKAudioPlayerStatePaused:
+            return PAUSED;
+        case STKAudioPlayerStateStopped:
+            return STOPPED;
+        case STKAudioPlayerStateDisposed:
+            return FINISHED;
+        case STKAudioPlayerStateBuffering:
+            return BUFFERING;
+        case STKAudioPlayerStateError:
+            return ERROR;
+        default:
+            return STOPPED;
     }
-    return statusString;
 }
 
 - (void)killPlayer{
   if (!_player) return;
   [_player stop];
-  [_player removeObserver:self forKeyPath:@"status"];
+  [_player removeObserver:self forKeyPath:@"state"];
   _player = nil;
 }
 
