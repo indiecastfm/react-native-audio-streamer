@@ -22,7 +22,9 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -66,8 +68,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         }
 
         // Create player
-        Handler mainHandler = new Handler();
-        TrackSelector trackSelector = new DefaultTrackSelector(mainHandler);
+        TrackSelector trackSelector = new DefaultTrackSelector();
         LoadControl loadControl = new DefaultLoadControl();
         this.player = ExoPlayerFactory.newSimpleInstance(reactContext, trackSelector, loadControl);
 
@@ -75,6 +76,7 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(reactContext, getDefaultUserAgent(), bandwidthMeter);
+        Handler mainHandler = new Handler();
         MediaSource audioSource = new ExtractorMediaSource(Uri.parse(urlString), dataSourceFactory, extractorsFactory, mainHandler, this);
 
         // Start preparing audio
@@ -181,6 +183,9 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {}
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
 
     private static String getDefaultUserAgent() {
         StringBuilder result = new StringBuilder(64);
