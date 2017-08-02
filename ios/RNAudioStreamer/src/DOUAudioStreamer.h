@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, DOUAudioStreamerErrorCode) {
 + (void)setHintWithAudioFile:(id <DOUAudioFile>)audioFile;
 
 @property (assign, readonly) DOUAudioStreamerStatus status;
+@property (nonatomic, readonly) DOUAudioFileProvider *fileProvider;
 @property (strong, readonly) NSError *error;
 
 @property (nonatomic, readonly) id <DOUAudioFile> audioFile;

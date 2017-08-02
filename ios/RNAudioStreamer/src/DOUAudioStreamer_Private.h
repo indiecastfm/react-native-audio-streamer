@@ -28,7 +28,6 @@
 @property (nonatomic, assign) NSTimeInterval duration;
 @property (nonatomic, assign) NSInteger timingOffset;
 
-@property (nonatomic, readonly) DOUAudioFileProvider *fileProvider;
 @property (nonatomic, strong) DOUAudioPlaybackItem *playbackItem;
 @property (nonatomic, strong) DOUAudioDecoder *decoder;
 
