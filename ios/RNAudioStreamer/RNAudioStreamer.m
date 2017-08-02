@@ -107,6 +107,11 @@ RCT_EXPORT_METHOD(status:(RCTResponseSenderBlock)callback){
 - (void)statusChanged {
     [self.bridge.eventDispatcher sendDeviceEventWithName:@"RNAudioStreamerStatusChanged"
                                                     body: _player ? [self rnStatusFromDouStatus] : STOPPED];
+
+    if ( _player && _player.fileProvider && _player.fileProvider.finished && _player.cachedPath ) {
+        [self.bridge.eventDispatcher sendDeviceEventWithName:@"RNAudioStreamerDownloadedFile"
+                                                        body: _player.cachedPath];
+    }
 }
 
 - (NSString *)rnStatusFromDouStatus {
