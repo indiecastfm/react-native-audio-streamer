@@ -16,7 +16,6 @@
 
 #import "DOUAudioStreamer.h"
 
-@class DOUAudioFileProvider;
 @class DOUAudioPlaybackItem;
 @class DOUAudioDecoder;
 

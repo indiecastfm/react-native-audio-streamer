@@ -20,6 +20,8 @@
 #import "DOUAudioFilePreprocessor.h"
 #import "DOUAudioAnalyzer+Default.h"
 
+@class DOUAudioFileProvider;
+
 DOUAS_EXTERN NSString *const kDOUAudioStreamerErrorDomain;
 
 typedef NS_ENUM(NSUInteger, DOUAudioStreamerStatus) {
