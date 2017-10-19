@@ -1,6 +1,6 @@
 {
   "name": "react-native-audio-streamer",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "repository": {
     "type": "git",
     "url": "git@github.com:indiecastfm/react-native-audio-streamer.git"
@@ -21,7 +21,7 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "react-native": ">=0.31.0"
+    "react-native": ">=0.40.0"
   },
   "main": "index.js",
   "jest": {
