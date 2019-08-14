@@ -15,7 +15,7 @@ Updated Version of [ReactNativeAudioStreamer](https://github.com/indiecastfm/rea
 ## React Native 0.59.10 and below
 Then run the following command to link to iOS & Android project
 
-`react-native link @matinzd/react-native-audio-streamerr`
+`react-native link @matinzd/react-native-audio-streamer`
 
 ## Usage
 
