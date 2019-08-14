@@ -6,13 +6,16 @@ iOS streaming is based on [DOUAudioStreamer](https://github.com/douban/DOUAudioS
 
 Android streaming is based on [ExoPlayer](https://github.com/google/ExoPlayer)
 
+Updated Version of [ReactNativeAudioStreamer](https://github.com/indiecastfm/react-native-audio-streamer)
+
 ## Installation
 
-`npm install react-native-audio-streamer --save`
+`yarn add @matinzd/react-native-audio-streamer`
 
+## React Native 0.59.10 and below
 Then run the following command to link to iOS & Android project
 
-`react-native link react-native-audio-streamer`
+`react-native link @matinzd/react-native-audio-streamer`
 
 ## Usage
 
@@ -68,11 +71,3 @@ _statusChanged(status) {
   // Your logic
 }
 ```
-
-
-
-## Milestones
-
-- Audio caching
-- Buffering ratio
-

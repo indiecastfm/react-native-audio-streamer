@@ -151,10 +151,6 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         this.sendStatusEvent();
     }
 
-    @Override
-    public void onPositionDiscontinuity() {
-
-    }
 
     @Override
     public void onLoadingChanged(boolean isLoading) {
@@ -181,8 +177,6 @@ public class RNAudioStreamerModule extends ReactContextBaseJavaModule implements
         this.sendStatusEvent();
     }
 
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {}
 
     @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
