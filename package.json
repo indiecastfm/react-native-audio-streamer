@@ -1,9 +1,9 @@
 {
-  "name": "react-native-audio-streamer",
-  "version": "0.0.9",
+  "name": "@matinzd/react-native-audio-streamer",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
-    "url": "git@github.com:indiecastfm/react-native-audio-streamer.git"
+    "url": "git@github.com:matinzd/react-native-audio-streamer.git"
   },
   "keywords": [
     "react-native",
